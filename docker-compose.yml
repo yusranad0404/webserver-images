@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+   nginx-be:
+    image: nginx
+    container_name: nginx-backend
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./public_html:/public_html
+      - ./conf.d:/etc/nginx/conf.d/
+      - ./certbot/conf/:/etc/nginx/ssl/
+      - ./certbot/data:/usr/share/nginx/html/letsencrypt
+    restart: unless-stopped
+    links:
+      - php
+
+   php:
+     image: php:7.2-fpm
+     volumes:
+       - ./public_html:/public_html
+
+   certbot:
+     image: certbot/certbot:latest
+     command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email yusran.ade@emailme.my.id --agree-tos --no-eff-email -d yourdomain.com
+     volumes:
+       - ./certbot/conf/:/etc/letsencrypt
+       - ./certbot/logs/:/var/log/letsencrypt
+       - ./certbot/data:/usr/share/nginx/html/letsencrypt
