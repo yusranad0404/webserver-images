@@ -4,9 +4,9 @@ server {
        return 301 https://$host$request_uri;  
 	   
 	location /.well-known/acme-challenge/ {
-		root /usr/share/nginx/html/letsencrypt/;
-		log_not_found off;
-   	 }
+        root /usr/share/nginx/html/letsencrypt/;
+        log_not_found off;
+    }
 } 
 
 server{
@@ -17,7 +17,8 @@ server{
 	
 	error_log  /var/log/nginx/nginx-error.log;
 	access_log /var/log/nginx/nginx-access.log;
-
+	
+	ssl on;
 	ssl_prefer_server_ciphers   on;  
 	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
